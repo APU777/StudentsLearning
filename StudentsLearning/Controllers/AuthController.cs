@@ -1,0 +1,66 @@
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
+using BusinessLogic.DTO.AuthDTO;
+using BusinessLogic.Interfaces;
+using StudentsLearning.ViewModels.AuthViewModels;
+using System.Threading.Tasks;
+
+namespace StudentsLearning.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AuthController : ControllerBase
+    {
+        private readonly IMapper _mapper;
+        private readonly IAuthService _authService;
+        private readonly IEmailSender _emailSender;
+        private readonly IAuthenticationSchemeProvider _scheme;
+
+        public AuthController(IMapper mapper, IAuthService authService, IEmailSender emailSender, IAuthenticationSchemeProvider scheme)
+        {
+            _mapper = mapper;
+            _authService = authService;
+            _emailSender = emailSender;
+            _scheme = scheme;
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody]LoginViewModel loginViewModel)
+        {
+            var userToLogin = _mapper.Map<LoginDTO>(loginViewModel);
+            var user = await _authService.Login(userToLogin);
+            if (user == null)
+                return BadRequest("Invalid username or password");
+            return Ok(new { token = user });
+        }
+
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody]RegisterViewModel registerViewModel)
+        {
+            var userToRegister = _mapper.Map<RegisterDTO>(registerViewModel);
+            var user = await _authService.Register(userToRegister);
+            if (user.Succeeded)
+            {
+                var result = await _authService.GenerateToken();
+                var callbackUrl = Url.Action(
+                    "ConfirmEmail",
+                    "Auth",
+                    new { userId = result.userId, code = result.code, password = registerViewModel.Password },
+                    protocol: HttpContext.Request.Scheme);
+                await _authService.SendEmail(callbackUrl, registerViewModel.Login);
+                return Ok("To finish registration check your email");
+            }
+            return BadRequest(user.Errors);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ConfirmEmail(string userId, string code, string password)
+        {
+            var result = await _authService.Confirmation(userId, code, password);
+            if (!string.IsNullOrEmpty(result))
+                return Redirect($"/confirm?token={result}");
+            return BadRequest();
+        }
+    }
+}
