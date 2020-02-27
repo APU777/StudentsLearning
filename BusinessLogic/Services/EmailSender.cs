@@ -21,7 +21,7 @@ namespace BusinessLogic.Services
         {
             var emailMessage = new MimeMessage();
 
-            emailMessage.From.Add(new MailboxAddress("StudentsAccounting.com", _emailSettings.Sender));
+            emailMessage.From.Add(new MailboxAddress("StudentsLearning.com", _emailSettings.Sender));
             emailMessage.To.Add(new MailboxAddress("", email));
             emailMessage.Subject = subject;
             emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)

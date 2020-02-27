@@ -7,9 +7,9 @@ using DataAccess.Entities;
 
 namespace DataAccess.Context
 {
-    public class StudentsAccountingDbContext :  IdentityDbContext<User, IdentityRole<int>, int>
+    public class StudentsLearningDbContext :  IdentityDbContext<User, IdentityRole<int>, int>
     {
-        public StudentsAccountingDbContext(DbContextOptions options) : base(options)
+        public StudentsLearningDbContext(DbContextOptions options) : base(options)
         {
             Database.EnsureCreated();
         }

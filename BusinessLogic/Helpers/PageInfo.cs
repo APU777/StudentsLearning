@@ -1,4 +1,4 @@
-﻿using StudentsAccounting.BusinessLogic.Helpers;
+﻿using BusinessLogic.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Text;
