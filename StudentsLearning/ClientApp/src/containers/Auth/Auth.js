@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
-import Input from '../../components/UI/Input/Input';
 import { connect } from 'react-redux';
-import { auth } from '../../store/actions/Auth/authActions';
+import { auth, register } from '../../store/actions/Auth/authActions';
+import { Button, Form, Message, Grid } from 'semantic-ui-react';
+import Loader from '../../components/UI/Loader/Loader';
 
-function validateEmail(email) {
+const validateEmail = email => {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
 }
 
 class Auth extends Component {
-    state = { 
+    state = {
+        formTouched: false,
         formControls: {
             email: {
                 value: '',
@@ -39,20 +41,20 @@ class Auth extends Component {
     }
 
     loginHandler = (e) => {
+        this.setState({ formTouched: false });
         e.preventDefault();
         this.props.auth(
             this.state.formControls.email.value,
-            this.state.formControls.password.value,
-            true
+            this.state.formControls.password.value
         );
     }
 
     registerHandler = (e) => {
+        this.setState({ formTouched: false });
         e.preventDefault();
-        this.props.auth(
+        this.props.register(
             this.state.formControls.email.value,
-            this.state.formControls.password.value,
-            false
+            this.state.formControls.password.value
         );
     }
 
@@ -60,18 +62,16 @@ class Auth extends Component {
         return Object.keys(this.state.formControls).map((controlName, index) => {
             const control = this.state.formControls[controlName];
             return (
-                <Input
-                    key={controlName + index} 
-                    type={control.type}
-                    value={control.value}
-                    valid={control.valid}
-                    touched={control.touched}
+                <Form.Input
+                    key={controlName + index}
                     label={control.label}
-                    shouldValidate={!!control.validation}
-                    errorMessage={control.errorMessage}
-                    onChange={event => this.onChangeHandler(event, controlName)} />
-            )
-        })
+                    type={control.type}
+                    onChange={event => this.onChangeHandler(event, controlName)}
+                    error={!this.state.formControls[controlName].valid
+                            && this.state.formControls[controlName].touched ? this.state.formControls[controlName].errorMessage : null}
+                />
+            );
+        });
     }
 
     validateControl(value, validation) {
@@ -97,33 +97,54 @@ class Auth extends Component {
         control.value = event.target.value;
         control.touched = true;
         control.valid = this.validateControl(control.value, control.validation);
-        formControls[controlName] = control
-        this.setState({formControls});
+        formControls[controlName] = control;
+        this.setState({ formControls });
+        this.setState({ formTouched: true });
     }
 
     render() {
         return (
-            <React.Fragment>
-                <form>
-                    { this.renderInputs() }
-                    <button onClick={this.loginHandler}>Login</button>
-                    <button onClick={this.registerHandler}>Register</button>
-                </form>
-            </React.Fragment>
+            <Grid>
+                <Grid.Row centered>
+                    <Grid.Column width={5}>
+                        {this.props.loading ? <Loader /> :
+                            <Form style={{ marginTop: '2em' }} error={this.props.error != null && !this.state.formTouched}>
+                                {this.renderInputs()}
+                                <Message
+                                    error
+                                    header='Someting went wrong'
+                                    content={this.props.error}
+                                />
+                                <Grid>
+                                    <Grid.Row centered>
+                                        <Grid.Column stretched>
+                                            <Button primary disabled={!this.state.formControls.email.valid || !this.state.formControls.password.valid} onClick={this.loginHandler}>Login</Button>
+                                            <div>Don't have account? Register</div>
+                                            <Button secondary disabled={!this.state.formControls.email.valid || !this.state.formControls.password.valid} onClick={this.registerHandler}>Register</Button>
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                </Grid>
+                            </Form>
+                        }
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
         );
     }
 };
 
 const mapStateToProps = state => {
     return {
-        error: state.auth.error
+        error: state.auth.error,
+        loading: state.auth.loading
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        auth: (email, password, isLoggedIn) => dispatch(auth(email, password, isLoggedIn))
+        auth: (email, password) => dispatch(auth(email, password)),
+        register: (email, password) => dispatch(register(email, password))
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Auth); 
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);

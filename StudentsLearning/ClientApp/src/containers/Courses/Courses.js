@@ -1,68 +1,58 @@
 ﻿﻿import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchCourses } from '../../store/actions/Courses/coursesActions';
+import { fetchCourses, subscribeToCourse } from '../../store/actions/Courses/coursesActions';
+import CourseCard from '../../components/CourseCard/CourseCard';
+import { Grid, Container } from 'semantic-ui-react';
+import Pagination from '../../components/Pagination/Pagination';
+import Loader from '../../components/UI/Loader/Loader';
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 class Courses extends Component {
     componentDidMount() {
         this.props.fetchCourses();
     }
 
-    getKeys = () => {
-        return Object.keys(this.props.coursesList[0]);
-    }
-
-    getHeader = () => {
-        const keys = this.getKeys();
-        return keys.map((key) => {
-            return <th key={key}>{key.toUpperCase()}</th>
-        })
-    }
-
-    renderRow = (keys, data) => {
-        return keys.map((key) => {
-            return <td key={data[key]}>{data[key]}</td>
-        })
-    }
-
-    getContent = () => {
-        var keys = this.getKeys();
-        return this.props.coursesList.map((row, index) => {
-            return <tr key={index}>{this.renderRow(keys, row)}</tr>
-        })
-    }
-
     render() {
-        let table = (
-            <React.Fragment>
-                <table>
-                    <thead>
-                        <tr>
-                            {this.props.coursesList.length > 0 ? this.getHeader() : null}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.props.coursesList.length > 0 ? this.getContent() : null}
-                    </tbody>
-                </table>
-                <button disabled={this.props.currentPage === 1} onClick={() => this.props.fetchCourses(this.props.currentPage - 1)}>Previous</button>
-                {
-                    this.props.totalPages.map((val, index) => {
-                        return <span key={index}> {val} </span>
-                    })
-                }
-                <button disabled={this.props.totalPages === this.props.currentPage} onClick={() => this.props.fetchCourses(this.props.currentPage + 1)}>Next</button>
-            </React.Fragment>
-        );
-
-        if (this.props.coursesList.length === 0) {
-            table = <h4>Loading list of courses...</h4>
-        }
-
         return (
-            <div>
-                Courses list:
-                {table}
-            </div>
+            <React.Fragment>
+                <Container>
+                    <Grid stretched columns={2}>
+                        <Grid.Row centered>
+                            {this.props.loading ? <Loader /> :
+                                this.props.coursesList.map((val, index) => {
+                                    return (
+                                        <CourseCard
+                                            key={index}
+                                            imageUrl={val.imageUrl}
+                                            header={val.name}
+                                            desc={this.props.coursesList[index].description}
+                                            subscribe={this.props.subscribe}
+                                            courseId={this.props.coursesList[index].id}
+                                            confirmed={this.props.emailConfirmed}
+                                            isAuth={this.props.isAuth}
+                                            userRole={this.props.userRole}
+                                        />
+                                    );
+                                })
+                            }
+                            </Grid.Row>
+                    </Grid>
+                    {this.props.loading ? null :
+                        <Container>
+                            <Grid>
+                                <Grid.Row centered>
+                                    <Pagination
+                                        currentPage={this.props.currentPage}
+                                        loadData={this.props.fetchCourses}
+                                        totalPages={this.props.totalPages} />
+                                </Grid.Row>
+                            </Grid>
+                        </Container>
+                    }
+                </Container>
+                <ToastContainer enableMultiContainer containerId={'auth'} autoClose={4000} />
+            </React.Fragment>
         );
     }
 }
@@ -72,14 +62,18 @@ const mapStateToProps = state => {
         coursesList: state.courses.courses,
         loading: state.courses.loading,
         totalPages: state.courses.totalPages,
-        currentPage: state.courses.currentPage
+        currentPage: state.courses.currentPage,
+        emailConfirmed: state.auth.emailConfirmed,
+        isAuth: state.auth.token !== null,
+        userRole: state.auth.role,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchCourses: currentPage => dispatch(fetchCourses(currentPage))
+        fetchCourses: currentPage => dispatch(fetchCourses(currentPage)),
+        subscribe: (Id) => dispatch(subscribeToCourse(Id))
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Courses); 
+export default connect(mapStateToProps, mapDispatchToProps)(Courses);

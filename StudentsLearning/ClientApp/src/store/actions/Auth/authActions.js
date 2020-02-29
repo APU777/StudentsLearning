@@ -1,20 +1,26 @@
 import axios from '../../../axios';
-import { AUTH_SUCCESS, AUTH_LOGOUT, AUTH_FAIL, AUTH_START } from '../Auth/authTypes';
+import { toast } from "react-toastify";
+import {
+    AUTH_SUCCESS,
+    AUTH_LOGOUT,
+    AUTH_FAIL,
+    AUTH_START,
+    REGISTER_START,
+    REGISTER_FAIL,
+    REGISTER_SUCCESS
+} from '../Auth/authTypes';
 import jwt from 'jsonwebtoken';
 
-export const auth = (login, password, isLoggedIn) => {
+export const auth = (login, password) => {
     return async dispatch => {
         dispatch(authStart());
         const authData = { login, password };
-        let url = 'auth/register';
-        if (isLoggedIn) {
-            url = 'auth/login';
-        }
         try {
-            const response = await axios.post(url, authData);
+            const response = await axios.post('auth/login', authData);
             const data = response.data;
             const decoded = jwt.decode(data.token);
             const userCreds = {
+                userId: data.nameid,
                 token: data.token,
                 role: decoded.role,
                 emailConfirmed: decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/ispersistent'],
@@ -24,8 +30,46 @@ export const auth = (login, password, isLoggedIn) => {
             dispatch(authSuccess(userCreds));
             dispatch(autoLogout(decoded.exp));
         } catch (e) {
-            dispatch(authFail(e));
+            dispatch(authFail(e.response.data));
         }
+    }
+}
+
+export const register = (login, password) => {
+    return async dispatch => {
+        dispatch(registerStart());
+        const registerData = { login, password };
+        try {
+            await axios.post('auth/register', registerData);
+            dispatch(registerSuccess());
+            toast.success("Letter with confirmation was sent to your email", { containerId: 'auth' });
+            dispatch(auth(login, password));
+        } catch (e) {
+            dispatch(registerFail(e.response.data[0].description));
+        }
+    }
+}
+
+export const registerSuccess = () => {
+    return {
+        type: REGISTER_SUCCESS,
+        loading: false
+    }
+}
+
+export const registerStart = () => {
+    return {
+        type: REGISTER_START,
+        loading: true,
+        error: null
+    }
+}
+
+export const registerFail = (e) => {
+    return {
+        type: REGISTER_FAIL,
+        loading: false,
+        error: e
     }
 }
 
@@ -37,7 +81,7 @@ export const authStart = () => {
     }
 }
 
-export const authSuccess = userCreds => {
+export const authSuccess = (userCreds) => {
     return {
         type: AUTH_SUCCESS,
         loading: false,
@@ -67,7 +111,8 @@ export const autoLogout = time => {
 export const logout = () => {
     localStorage.removeItem('token');
     return {
-        type: AUTH_LOGOUT
+        type: AUTH_LOGOUT,
+        loading: false
     }
 }
 
@@ -82,7 +127,6 @@ export const autoLogin  = () => {
                 if (decoded.exp < new Date().getTime().valueOf / 1000) {
                     dispatch(logout());
                 } else {
-                    console.log(decoded);
                     const userCreds = {
                         token: token,
                         role: decoded.role,
