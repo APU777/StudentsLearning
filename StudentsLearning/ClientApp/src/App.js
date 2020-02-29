@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import Layout from './containers/Layout/Layout';
 import Auth from './containers/Auth/Auth';
 import Logout from './containers/Auth/Logout/Logout';
-import { autoLogin } from './store/actions/authActions';
+import { autoLogin } from './store/actions/Auth/authActions';
+import Courses from './containers/Courses/Courses';
 
 class App extends Component {
   componentDidMount() {
@@ -14,7 +15,7 @@ render() {
   let routes = (
       <Switch>
           <Route path='/auth' component={Auth} />
-          <Route path='/' exact render={() => (<h1>Students Learning</h1>)} />
+          <Route path='/' exact component={Courses} />
           <Redirect to='/' />
       </Switch>
   );
@@ -23,7 +24,7 @@ render() {
       routes = (
           <Switch>
               <Route path='/logout' component={Logout} />
-              <Route path='/' exact render={() => (<h1>Students Learning</h1>)} />
+              <Route path='/' exact component={Courses} />
               <Redirect to='/' />
           </Switch>
       );
