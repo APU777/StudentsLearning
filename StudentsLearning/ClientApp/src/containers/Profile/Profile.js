@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchUserData, fetchUserCourses, updateProfileInfo } from '../../store/actions/Profile/profileActions';
-import ProfileInfo from '../../components/Profile/ProfileInfo';
+import ProfileInfo from '../../components/Profile/Profile';
 import MyCourses from '../../components/Profile/MyCourses';
 import MenuToggle from '../../components/Navigation/MenuToggle/MenuToggle';
 import UpdateProfile from '../../components/Profile/UpdateProfile';
@@ -50,9 +50,7 @@ class Profile extends Component {
                     <Route
                         path={this.props.match.path + '/my-courses'}
                         render={() => <MyCourses
-                            loading={this.props.userCoursesLoading}
-                            getUserCourses={() => this.getUserCourses(this.props.token)}
-                            userCourses={this.props.userCourses}
+                            token={this.props.token}
                         />} />
                     <Route
                         path={this.props.match.path + '/update-profile'}

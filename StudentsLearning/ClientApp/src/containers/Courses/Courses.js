@@ -1,7 +1,7 @@
 ﻿﻿import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchCourses, subscribeToCourse } from '../../store/actions/Courses/coursesActions';
-import CourseCard from '../../components/CourseCard/CourseCard';
+import CourseCard from '../../components/Courses/CourseCard/CourseCard';
 import { Grid, Container } from 'semantic-ui-react';
 import Pagination from '../../components/Pagination/Pagination';
 import Loader from '../../components/UI/Loader/Loader';

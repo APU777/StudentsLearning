@@ -9,6 +9,8 @@ import Courses from './containers/Courses/Courses';
 import Profile from './containers/Profile/Profile';
 import Confirm from './containers/Auth/Confirm/Confirm';
 import Admin from './containers/Admin/Admin';
+import CourseDetail from './components/Courses/CourseDetail/CourseDetail';
+
 
 class App extends Component {
   componentDidMount() {
@@ -18,6 +20,7 @@ class App extends Component {
   render() {
     let routes = (
       <Switch>
+        <Route path='/course/:id' component={CourseDetail} />
         <Route path='/auth' component={Auth} />
         <Route path='/confirm' component={Confirm} />
         <Route path='/' exact component={Courses} />
@@ -28,6 +31,7 @@ class App extends Component {
     if (this.props.isLoggedIn) {
       routes = (
         <Switch>
+          <Route path='/course/:id' component={CourseDetail} />
           <Route path='/logout' component={Logout} />
           <Route path='/confirm' component={Confirm} />
           <Route path='/profile' component={Profile} />
@@ -40,6 +44,7 @@ class App extends Component {
     if (this.props.isLoggedIn && this.props.userRole === 'admin') {
       routes = (
         <Switch>
+          <Route path='/course/:id' component={CourseDetail} />
           <Route path='/logout' component={Logout} />
           <Route path='/admin' component={Admin} />
           <Route path='/' exact component={Courses} />
@@ -59,7 +64,8 @@ class App extends Component {
 const mapStateToProps = state => {
   return {
     isLoggedIn: state.auth.token !== null,
-    userRole: state.auth.role
+    userRole: state.auth.role,
+    confirmed: state.auth.emailConfirmed
   }
 }
 
