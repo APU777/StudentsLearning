@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { auth, register } from '../../store/actions/Auth/authActions';
-import { Button, Form, Message, Grid } from 'semantic-ui-react';
+import { Button, Form, Message, Container, Grid } from 'semantic-ui-react';
 import Loader from '../../components/UI/Loader/Loader';
 
 const validateEmail = email => {
@@ -108,7 +108,7 @@ class Auth extends Component {
                 <Grid.Row centered>
                     <Grid.Column width={5}>
                         {this.props.loading ? <Loader /> :
-                            <Form style={{ marginTop: '2em' }} error={this.props.error != null && !this.state.formTouched}>
+                            <Form error={this.props.error != null && !this.state.formTouched}>
                                 {this.renderInputs()}
                                 <Message
                                     error
@@ -120,7 +120,7 @@ class Auth extends Component {
                                         <Grid.Column stretched>
                                             <Button primary disabled={!this.state.formControls.email.valid || !this.state.formControls.password.valid} onClick={this.loginHandler}>Login</Button>
                                             <div>Don't have account? Register</div>
-                                            <Button secondary disabled={!this.state.formControls.email.valid || !this.state.formControls.password.valid} onClick={this.registerHandler}>Register</Button>
+                                            <Button disabled={!this.state.formControls.email.valid || !this.state.formControls.password.valid} onClick={this.registerHandler}>Register</Button>
                                         </Grid.Column>
                                     </Grid.Row>
                                 </Grid>

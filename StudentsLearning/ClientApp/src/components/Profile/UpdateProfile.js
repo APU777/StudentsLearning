@@ -79,7 +79,7 @@ class UpdateProfile extends Component {
 
     renderFileInput = () => {
         return Object.keys(this.state.fileControl).map((controlName, index) => {
-            const errorMsg = <span style={{color: 'red'}}>Not supported format. Only .jpeg, .jpg, .png</span>
+            const errorMsg = <span style={{ color: 'red' }}>Not supported format. Only .jpeg, .jpg, .png</span>
             return (
                 <div key={index}>
                     <input
@@ -106,7 +106,7 @@ class UpdateProfile extends Component {
             loadedFile = control.value;
         }
         fileControl[controlName] = control;
-        this.setState({fileControl});
+        this.setState({ fileControl });
     }
 
     updateHandler = e => {
@@ -215,7 +215,7 @@ class UpdateProfile extends Component {
                             <Grid>
                                 <Grid.Row centered>
                                     <Grid.Column stretched>
-                                        <Button style={{ marginTop: '1em' }} disabled={!this.state.isFormValid} onClick={this.updateHandler}>Update</Button>
+                                        <Button secondary style={{ marginTop: '1em' }} disabled={!this.state.isFormValid} onClick={this.updateHandler}>Update</Button>
                                     </Grid.Column>
                                 </Grid.Row>
                             </Grid>
