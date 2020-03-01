@@ -4,13 +4,15 @@ import { Card, Button, Grid } from 'semantic-ui-react';
 
 const courseCard = props => {
     return (
-        <Grid.Column width={8} stretched>
-            <Card>
-                <Card.Content>
-                    <Card.Header>
+        <Grid.Column width={6} style={{ paddingBottom: '3em', paddingTop: '5em' }}>
+            <Card centered>
+            <Card.Content textAlign='center'>
+                <Card.Header textAlign='center'>
                         {props.header}
                     </Card.Header>
-                    {props.startDate}
+                    <div>
+                        {props.desc}
+                    </div>
                     {
                         props.isAuth && props.userRole !== 'admin' && !props.match.path + '/update-profile' ?
                             <Button

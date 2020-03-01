@@ -15,7 +15,7 @@ export const fetchCourses = (currentPage) => {
                 courses.push({
                     id: response.data[index].id,
                     name: response.data[index].courseName,
-                    startDate: response.data[index].startDate
+                    description: response.data[index].description
                 })
             });
             dispatch(fetchCoursesSuccess(courses, pageInfo));
