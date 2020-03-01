@@ -1,24 +1,37 @@
 import React from 'react';
 import NavigationItem from './NavigationItem/NavigationItem';
-import { Menu } from 'semantic-ui-react';
+import { Container } from 'semantic-ui-react';
+
+const renderLinks = (links) => {
+    return links.map((val, index) => {
+        return <NavigationItem position={val.position} key={index} link={val.to}>{val.label}</NavigationItem>
+    });
+}
 
 const navigationItems = props => {
-    let links = (
-        <React.Fragment>
-            <NavigationItem link='/logout'>Logout</NavigationItem>
-            <NavigationItem link='/profile'>Profile</NavigationItem>
-        </React.Fragment>
-    );
+    const links = [];
+
+    if (props.isAuth && props.userRole === 'admin') {
+        links.push({ to: '/admin', label: 'Admin', position: 'left' });
+        links.push({ to: '/logout', label: 'Logout', position: 'right' })
+    }
+    if (props.isAuth && props.userRole === 'student') {
+        links.push({ to: '/profile', label: 'Profile', position: 'left' });
+        links.push({ to: '/logout', label: 'Logout', position: 'right' });
+    }
+    if (props.isAuth && props.userRole === 'No role') {
+        links.push({ to: '/logout', label: 'Logout', position: 'right' });
+    }
     if (!props.isAuth) {
-        links = <NavigationItem link='/auth'>Authorize</NavigationItem>
+        links.push({ to: '/auth', label: 'Authorize', position: 'right' });
     }
 
     return (
-        <Menu.Menu>
+        <Container>
             <NavigationItem exact={true} link='/'>Home</NavigationItem>
-            { links }
-        </Menu.Menu>
+            {renderLinks(links)}
+        </Container>
     );
 }
 
-export default navigationItems; 
+export default navigationItems;

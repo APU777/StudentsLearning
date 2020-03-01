@@ -9,6 +9,14 @@ const courseCard = props => {
                     <Card.Header>
                         {props.header}
                     </Card.Header>
+                    {
+                        props.isAuth && props.userRole !== 'admin' ?
+                            <Button
+                                disabled={!props.confirmed}
+                                content={props.confirmed ? 'Subscribe' : 'Confirm email'}
+                                primary
+                                onClick={() => props.subscribe(props.courseId)} /> : null
+                    }
                     <Button
                         disabled={!props.confirmed}
                         content={props.confirmed ? 'Subscribe' : 'Confirm email'}

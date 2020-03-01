@@ -116,7 +116,7 @@ export const logout = () => {
     }
 }
 
-export const autoLogin  = () => {
+export const autoLogin = () => {
     return dispatch => {
         const token = localStorage.getItem('token');
         const decoded = jwt.decode(token);

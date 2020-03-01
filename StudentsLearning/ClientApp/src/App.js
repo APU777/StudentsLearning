@@ -7,49 +7,66 @@ import Logout from './containers/Auth/Logout/Logout';
 import { autoLogin } from './store/actions/Auth/authActions';
 import Courses from './containers/Courses/Courses';
 import Profile from './containers/Profile/Profile';
+import Confirm from './containers/Auth/Confirm/Confirm';
+import Admin from './containers/Admin/Admin';
 
 class App extends Component {
   componentDidMount() {
     this.props.autoLogin();
   }
-render() {
-  let routes = (
+
+  render() {
+    let routes = (
       <Switch>
-          <Route path='/auth' component={Auth} />
+        <Route path='/auth' component={Auth} />
+        <Route path='/confirm' component={Confirm} />
+        <Route path='/' exact component={Courses} />
+        <Redirect to='/' />
+      </Switch>
+    );
+
+    if (this.props.isLoggedIn) {
+      routes = (
+        <Switch>
+          <Route path='/logout' component={Logout} />
+          <Route path='/confirm' component={Confirm} />
+          <Route path='/profile' component={Profile} />
           <Route path='/' exact component={Courses} />
           <Redirect to='/' />
-      </Switch>
-  );
-
-  if (this.props.isLoggedIn) {
-      routes = (
-          <Switch>
-              <Route path='/logout' component={Logout} />
-              <Route path='/profile' component={Profile} />
-              <Route path='/' exact component={Courses} />
-              <Redirect to='/' />
-          </Switch>
+        </Switch>
       );
-  }
+    }
 
-  return (
-     <Layout>
-          { routes }
-     </Layout>
-   )
-}
+    if (this.props.isLoggedIn && this.props.userRole === 'admin') {
+      routes = (
+        <Switch>
+          <Route path='/logout' component={Logout} />
+          <Route path='/admin' component={Admin} />
+          <Route path='/' exact component={Courses} />
+          <Redirect to='/' />
+        </Switch>
+      );
+    }
+
+    return (
+      <Layout>
+        {routes}
+      </Layout>
+    )
+  }
 }
 
 const mapStateToProps = state => {
-return {
-  isLoggedIn: state.auth.token !== null
-}
+  return {
+    isLoggedIn: state.auth.token !== null,
+    userRole: state.auth.role
+  }
 }
 
 const mapDispatchToProps = dispatch => {
-return {
-  autoLogin: () => dispatch(autoLogin())
-};
+  return {
+    autoLogin: () => dispatch(autoLogin())
+  };
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App)); 

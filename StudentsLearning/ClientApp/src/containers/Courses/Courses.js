@@ -36,7 +36,7 @@ class Courses extends Component {
                                     );
                                 })
                             }
-                            </Grid.Row>
+                        </Grid.Row>
                     </Grid>
                     {this.props.loading ? null :
                         <Container>
