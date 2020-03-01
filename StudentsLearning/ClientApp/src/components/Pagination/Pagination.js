@@ -2,8 +2,8 @@ import React from 'react';
 import { Button } from 'semantic-ui-react';
 
 const pagination = props => (
-    <React.Fragment>
-        <Button disabled={props.currentPage === 1} onClick={() => props.loadData(props.currentPage - 1)}>Previous</Button>
+    <div className="ui pagination left floated menu">
+        <Button className="icon item" disabled={props.currentPage === 1} onClick={() => props.loadData(props.currentPage - 1)}><i className="chevron left icon"></i></Button>
         {
             props.totalPages.map((val, index) => {
                 return <span
@@ -12,9 +12,8 @@ const pagination = props => (
                 </span>
             })
         }
-        <Button disabled={props.totalPages.length === props.currentPage} onClick={() => props.loadData(props.currentPage + 1)}>Next</Button>
-    </React.Fragment>
-    //<a className='icon item' disabled={props.totalPages.length === props.currentPage} onClick={() => props.loadData(props.currentPage + 1)}><i className='chevron right icon'></i>Next</a>
+        <Button className="icon item" disabled={props.totalPages.length === props.currentPage} onClick={() => props.loadData(props.currentPage + 1)}><i className="chevron right icon"></i></Button>
+    </div>
 );
 
 export default pagination; 

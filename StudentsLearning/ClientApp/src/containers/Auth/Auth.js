@@ -68,7 +68,7 @@ class Auth extends Component {
                     type={control.type}
                     onChange={event => this.onChangeHandler(event, controlName)}
                     error={!this.state.formControls[controlName].valid
-                        && this.state.formControls[controlName].touched ? this.state.formControls[controlName].errorMessage : null}
+                            && this.state.formControls[controlName].touched ? this.state.formControls[controlName].errorMessage : null}
                 />
             );
         });
