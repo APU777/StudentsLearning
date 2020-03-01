@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import { Card, Button, Grid } from 'semantic-ui-react';
 
 const courseCard = props => {
@@ -9,8 +10,9 @@ const courseCard = props => {
                     <Card.Header>
                         {props.header}
                     </Card.Header>
+                    {props.startDate}
                     {
-                        props.isAuth && props.userRole !== 'admin' ?
+                        props.isAuth && props.userRole !== 'admin' && !props.match.path + '/update-profile' ?
                             <Button
                                 disabled={!props.confirmed}
                                 content={props.confirmed ? 'Subscribe' : 'Confirm email'}
@@ -28,4 +30,4 @@ const courseCard = props => {
     );
 };
 
-export default courseCard; 
+export default withRouter(courseCard); 
