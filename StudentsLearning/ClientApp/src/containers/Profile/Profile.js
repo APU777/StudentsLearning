@@ -1,35 +1,52 @@
 import React, { Component } from 'react';
+import { Route, Switch, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchUserData } from '../../store/actions/Profile/profileActions';
-import ProfileInfo from '../../components/ProfileInfo/ProfileInfo';
+import ProfileInfo from '../../components/Profile/Profile';
+import MyCourses from '../../components/Profile/MyCourses';
+import MenuToggle from '../../components/Navigation/MenuToggle/MenuToggle';
+import UpdateProfile from '../../components/Profile/UpdateProfile';
 
 class Profile extends Component {
+    state = { visible: false }
+
     componentDidMount() {
         this.props.getProfile(this.props.token);
     }
 
+    handleShowClick = () => this.setState({ visible: true })
+    handleSidebarHide = () => this.setState({ visible: false })
+
     render() {
         return (
-            <React.Fragment>
-                <h1>Your profile</h1>
-                <ProfileInfo
-                    firstName={this.props.firstName}
-                    lastName={this.props.lastName}
-                    age={this.props.age}
-                    gender={this.props.gender}
-                    photoUrl={this.props.photoUrl}
-                    registered={this.props.registered}
+            <div>
+                <MenuToggle
+                    visible={this.state.visible}
+                    handleShowClick={this.handleShowClick}
+                    handleSidebarHide={this.handleSidebarHide}
                 />
-            </React.Fragment>
-        )
+                <Switch>
+                    <Route
+                        exact
+                        path={this.props.match.path}
+                        component={ProfileInfo} />
+                    <Route
+                        path={this.props.match.path + '/my-courses'}
+                        component={MyCourses} />
+                    <Route
+                        path={this.props.match.path + '/update-profile'}
+                        component={UpdateProfile} />
+                </Switch>
+            </div>
+        );
     }
 }
 
 const mapStateToProps = state => {
     return {
-        firstName: state.profile.firstName,
-        lastName: state.profile.lastName,
-        age: state.profile.age,
+        firstName: state.profile.firstName, 
+        lastName: state.profile.lastName, 
+        age: state.profile.age, 
         photoUrl: state.profile.photoUrl,
         gender: state.profile.gender,
         token: state.auth.token,
@@ -43,4 +60,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Profile); 
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Profile));
