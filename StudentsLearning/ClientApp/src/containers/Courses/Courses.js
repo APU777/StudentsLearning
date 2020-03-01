@@ -23,7 +23,6 @@ class Courses extends Component {
                                 this.props.coursesList.map((val, index) => {
                                     return (
                                         <CourseCard
-                                            imageUrl={val.imageUrl}
                                             key={index}
                                             imageUrl={val.imageUrl}
                                             header={val.name}
@@ -37,7 +36,7 @@ class Courses extends Component {
                                     );
                                 })
                             }
-                        </Grid.Row>
+                            </Grid.Row>
                     </Grid>
                     {this.props.loading ? null :
                         <Container>

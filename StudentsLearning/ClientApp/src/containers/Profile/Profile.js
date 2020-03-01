@@ -43,6 +43,8 @@ class Profile extends Component {
                         render={() =>
                             <Container>
                                 <ProfileInfo
+                                    token={this.props.token}
+                                    getProfile={this.props.getProfile}
                                     loading={this.props.profileLoading}
                                     photoUrl={this.props.photoUrl}
                                     registered={convertDate(this.props.registered)}
@@ -62,7 +64,10 @@ class Profile extends Component {
                         path={this.props.match.path + '/update-profile'}
                         render={() =>
                             <Container>
-                                <UpdateProfile {...this.props} />
+                                <UpdateProfile
+                                    loading={this.props.profileLoading}
+                                    update={this.props.updateProfileInfo}
+                                    token={this.props.token} />
                             </Container>} />
                 </Switch>
             </div>
@@ -72,9 +77,9 @@ class Profile extends Component {
 
 const mapStateToProps = state => {
     return {
-        firstName: state.profile.firstName, 
-        lastName: state.profile.lastName, 
-        age: state.profile.age, 
+        firstName: state.profile.firstName,
+        lastName: state.profile.lastName,
+        age: state.profile.age,
         photoUrl: state.profile.photoUrl,
         gender: state.profile.gender,
         token: state.auth.token,
