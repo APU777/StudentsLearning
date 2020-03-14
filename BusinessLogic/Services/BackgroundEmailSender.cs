@@ -23,11 +23,8 @@ namespace BusinessLogic.Services
 
         public void SendNotificationEmails(string email, string courseName, DateTime startDate)
         {
-            //var monthNotify = startDate.Subtract(startDate.AddMinutes(10).Subtract(startDate));
-            //var weekNotify = startDate.Subtract((startDate.AddMinutes(5).Subtract(startDate)));
-            //var dayNotify = startDate.Subtract((startDate.AddMinutes(2).Subtract(startDate)));
-            var monthNotify = startDate.Subtract(startDate.AddMonths(1).Subtract(startDate));
-            var weekNotify = startDate.Subtract((startDate.AddDays(7).Subtract(startDate)));
+            var monthNotify = startDate.AddMonths(1);
+            var weekNotify = startDate.AddDays(7);
             var hoursInDate = startDate.Hour;
             var minutesInDate = startDate.Minute;
             var newDate = startDate.Subtract(startDate.AddDays(1).Subtract(startDate.AddHours(-hoursInDate).AddMinutes(-minutesInDate)));
