@@ -25,10 +25,7 @@ namespace BusinessLogic.Services
         {
             var monthNotify = startDate.AddMonths(1);
             var weekNotify = startDate.AddDays(7);
-            var hoursInDate = startDate.Hour;
-            var minutesInDate = startDate.Minute;
-            var newDate = startDate.Subtract(startDate.AddDays(1).Subtract(startDate.AddHours(-hoursInDate).AddMinutes(-minutesInDate)));
-            var dayNotify = newDate.AddHours(8);
+            var dayNotify = startDate.AddHours(-1);
 
             if (DateTime.Now < monthNotify)
                 BackgroundJob.Schedule(() =>
@@ -36,8 +33,11 @@ namespace BusinessLogic.Services
             if(DateTime.Now < weekNotify)
                 BackgroundJob.Schedule(() =>
                 _emailSender.SendEmailAsync(email, "Weekly Course notification", $"Your course {courseName} will start at {startDate}"), weekNotify);
+            if (DateTime.Now < dayNotify)
+                BackgroundJob.Schedule(() =>
+                _emailSender.SendEmailAsync(email, "Daily Course notification", $"Your course {courseName} will start at {startDate}"), startDate);
             BackgroundJob.Schedule(() =>
-                _emailSender.SendEmailAsync(email, "Day Course notification", $"Your course {courseName} will start at {startDate}"), dayNotify);
+                _emailSender.SendEmailAsync(email, "Subscribed Course notification", $"Your course {courseName} will start at {startDate}"), DateTime.Now);
         }
     }
 }

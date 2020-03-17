@@ -65,7 +65,7 @@ namespace StudentsLearning.Controllers
             string userConfirmed = User.FindFirst(ClaimTypes.IsPersistent).Value;
             if (userConfirmed == "False")
                 return BadRequest("Confirm your email to be allowed for subscribtion");
-            var startDate = DateTime.Parse(courseRegistration.StartDate);
+            DateTime startDate = DateTime.ParseExact(courseRegistration.StartDate, "dd/MM/yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
             var res = await _courseService.
             RegisterToCourse(int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value), courseRegistration.CourseId, startDate);
             if (res.Successful)

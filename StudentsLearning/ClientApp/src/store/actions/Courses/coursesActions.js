@@ -109,14 +109,17 @@ export const fetchCoursesError = e => {
 }
 
 export const subscribeToCourse = (courseId, dt) => {
-    const day = dt.getDate();
-    const month = dt.getMonth() + 1;
-    const year = dt.getFullYear();
-    const hour = dt.getHours();
-    const minute = dt.getMinutes();
-    const second = dt.getSeconds();
+    var day = dt.getDate().toString().padStart(2, "0");
+    var month = (dt.getMonth() + 1).toString().padStart(2, "0");
+    var year = dt.getFullYear();
+    var hour = dt.getHours().toString().padStart(2, "0");
+    var minute = dt.getMinutes().toString().padStart(2, "0");
+    var second = dt.getSeconds().toString().padStart(2, "0");
     
     const startDate = day + "/" + month + "/" + year + " " + hour + ':' + minute + ':' + second;
+
+    console.log(startDate);
+
     const token = localStorage.getItem('token');
     const courseData = { courseId, startDate };
     return async dispatch => {
