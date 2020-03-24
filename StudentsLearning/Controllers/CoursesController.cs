@@ -35,6 +35,24 @@ namespace StudentsLearning.Controllers
             return Ok(_mapper.Map<CourseViewModel>(course));
         }
 
+        [HttpDelete("[action]/{id}")]
+        public async Task<IActionResult> DeleteCourse(int id)
+        {
+            var course = await _courseService.GetCourseById(id);
+            if (course == null)
+                return BadRequest("No such course");
+            return Ok(_mapper.Map<CourseViewModel>(course));
+        }
+
+        [HttpPut("[action]/{id}")]
+        public async Task<IActionResult> EditCourse(int id)
+        {
+            var course = await _courseService.GetCourseById(id);
+            if (course == null)
+                return BadRequest("No such course");
+            return Ok(_mapper.Map<CourseViewModel>(course));
+        }
+
         [Authorize(Roles = "admin")]
         [HttpGet("[action]")]
         public async Task<IActionResult> GetCoursesForAdmin([FromQuery]CoursesQueryViewModel coursesViewModel)
