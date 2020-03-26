@@ -36,6 +36,34 @@ namespace StudentsLearning.Controllers
         }
 
         [Authorize(Roles = "admin")]
+        [HttpDelete("[action]/{id}")]
+        public async Task<IActionResult> DeleteCourse(int id)
+        {
+            await _courseService.DeleteCourse(id);
+            return Ok("Deleted");
+        }
+
+        [Authorize(Roles = "admin")]
+        [HttpPut("updateCourse")]
+        public async Task<IActionResult> UpdateCourse([FromBody] UpdateCourseViewModel updateCourseView)
+        {
+            var updateCourse = _mapper.Map<UpdateCourseDTO>(updateCourseView);
+            CourseDTO course = await _courseService.UpdateCourse(updateCourse);
+            if (course == null)
+                return BadRequest("Not updated");
+            return Ok(_mapper.Map<CourseViewModel>(new CourseDTO()));
+        }
+
+        [Authorize(Roles = "admin")]
+        [HttpPost("addCourse")]
+        public async Task<IActionResult> AddCourse([FromBody] CourseAddViewModel courseAdd)
+        {
+            var addCourse = _mapper.Map<CourseAddDTO>(courseAdd);
+            await _courseService.AddCourse(addCourse);
+            return Ok("Added");
+        }
+
+        [Authorize(Roles = "admin")]
         [HttpGet("[action]")]
         public async Task<IActionResult> GetCoursesForAdmin([FromQuery]CoursesQueryViewModel coursesViewModel)
         {
@@ -43,6 +71,18 @@ namespace StudentsLearning.Controllers
             var result = await _courseService.GetAllCoursesForAdmin(courses);
             var pageInfo = result.Info;
             var coursesList = _mapper.Map<IEnumerable<CourseForAdminViewModel>>(result.List);
+            Response.AddPagination(pageInfo.CurrentPage, pageInfo.PageSize, pageInfo.TotalCount, pageInfo.TotalPages);
+            return Ok(coursesList);
+        }
+
+        [Authorize(Roles = "student")]
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetCoursesForUser([FromQuery]CoursesQueryViewModel coursesViewModel)
+        {
+            var courses = _mapper.Map<QueryParamsDTO>(coursesViewModel);
+            var result = await _courseService.GetAllCoursesForUser(courses);
+            var pageInfo = result.Info;
+            var coursesList = _mapper.Map<IEnumerable<CourseForUserViewModel>>(result.List);
             Response.AddPagination(pageInfo.CurrentPage, pageInfo.PageSize, pageInfo.TotalCount, pageInfo.TotalPages);
             return Ok(coursesList);
         }

@@ -10,6 +10,8 @@ import Profile from './containers/Profile/Profile';
 import Confirm from './containers/Auth/Confirm/Confirm';
 import Admin from './containers/Admin/Admin';
 import CourseDetail from './components/Courses/CourseDetail/CourseDetail';
+import UpdateCourseDetail from './components/Courses/CourseDetail/UpdateCourseDetail';
+import AddCourse from './components/Admin/AddCourse';
 
 
 class App extends Component {
@@ -44,7 +46,8 @@ class App extends Component {
     if (this.props.isLoggedIn && this.props.userRole === 'admin') {
       routes = (
         <Switch>
-          <Route path='/course/:id' component={CourseDetail} />
+          <Route path='/course/:id' component={UpdateCourseDetail} />
+          <Route path='/addCourse' component={AddCourse} />
           <Route path='/logout' component={Logout} />
           <Route path='/admin' component={Admin} />
           <Route path='/' exact component={Courses} />

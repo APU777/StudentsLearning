@@ -27,7 +27,8 @@ export const fetchStudents = (sortBy='', isSortAscending = false, search='', cur
                     lastName: res.data[index].lastName,
                     age: res.data[index].age,
                     gender: res.data[index].gender,
-                    registrationDate: convertDate(res.data[index].registrationDate)
+                    registrationDate: convertDate(res.data[index].registrationDate),
+                    isActive: true
                 })
             });
             dispatch(fetchSuccess(students, pageInfo));

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Table, Input, Button } from 'semantic-ui-react';
 import Pagination from '../../Pagination/Pagination';
+import { NavLink, withRouter } from 'react-router-dom';
 import Loader from '../../UI/Loader/Loader';
 import styled from 'styled-components';
 
@@ -55,7 +56,9 @@ export default class TableContent extends Component {
 
     renderStudentsTab = () => {
         let keys = this.getKeys();
+        //console.log(keys);
         return this.props.value.map((row) => {
+            //console.log(row);
             return <Table.Row key={this.generateKey(row)}>{this.renderRow(keys, row)}</Table.Row>
         })
     };
@@ -70,6 +73,7 @@ export default class TableContent extends Component {
     }
 
     render() {
+        console.log(this.props);
         let tabContent = (
             <Table sortable celled>
                 <Table.Header>
@@ -109,6 +113,9 @@ export default class TableContent extends Component {
                     onChange={this.handleInputChange}
                     placeholder='Search...' />
                 <Button onClick={this.props.resetSearch}>Reset</Button>
+                <NavLink to={'/addCourse'}>
+                    <Button onClick={console.log("add course")}>Add Course</Button>
+                </NavLink>                
                 {tabContent}
             </React.Fragment>
         );
