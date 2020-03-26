@@ -36,7 +36,10 @@ export const reducer = (state = initialState, action) => {
                 loading: action.loading
             }
         case AUTH_FAIL:
-            return { ...state, error: action.error, loading: action.loading }
+            return { 
+                ...state, 
+                error: action.error, 
+                loading: action.loading }
         case REGISTER_START:
             return {
                 ...state,

@@ -30,6 +30,8 @@ namespace StudentsLearning.Controllers
         {
             var userToLogin = _mapper.Map<LoginDTO>(loginViewModel);
             var user = await _authService.Login(userToLogin);
+            if (user == "Blocked")
+                return BadRequest("Your account is blocked!");
             if (user == null)
                 return BadRequest("Invalid username or password");
             return Ok(new { token = user });

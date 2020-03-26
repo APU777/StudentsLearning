@@ -19,5 +19,6 @@ namespace DataAccess.Entities
         public string Gender { get; set; }
         public DateTime RegistrationDate { get; set; }
         public virtual List<UsersCourses> Courses { get; set; }
+        public bool Blocked { get; set; }
     }
 }

@@ -22,7 +22,8 @@ namespace DataAccess.Configuration.InitialData
                     Email = "john@gmail.com",
                     EmailConfirmed = true,
                     Gender = "Male",
-                    RegistrationDate = new DateTime(2018, 4, 10)
+                    RegistrationDate = new DateTime(2018, 4, 10),
+                    Blocked = false
                 },
                 new User
                 {
@@ -33,7 +34,8 @@ namespace DataAccess.Configuration.InitialData
                     Email = "paul@gmail.com",
                     EmailConfirmed = true,
                     Gender = "Male",
-                    RegistrationDate = new DateTime(2017, 4, 10)
+                    RegistrationDate = new DateTime(2017, 4, 10),
+                    Blocked = false
                 },
                 new User
                 {
@@ -44,7 +46,8 @@ namespace DataAccess.Configuration.InitialData
                     Email = "lola@gmail.com",
                     EmailConfirmed = true,
                     Gender = "Female",
-                    RegistrationDate = new DateTime(2019, 4, 10)
+                    RegistrationDate = new DateTime(2019, 4, 10),
+                    Blocked = false
                 },
                 new User
                 {
@@ -55,7 +58,8 @@ namespace DataAccess.Configuration.InitialData
                     Email = "vinnie@gmail.com",
                     EmailConfirmed = true,
                     Gender = "Male",
-                    RegistrationDate = new DateTime(2018, 3, 8)
+                    RegistrationDate = new DateTime(2018, 3, 8),
+                    Blocked = false
                 },
                 new User
                 {
@@ -66,7 +70,8 @@ namespace DataAccess.Configuration.InitialData
                     Email = "paulgilbert@gmail.com",
                     EmailConfirmed = true,
                     Gender = "Male",
-                    RegistrationDate = new DateTime(2019, 3, 16)
+                    RegistrationDate = new DateTime(2019, 3, 16),
+                    Blocked = false
                 },
                 new User
                 {
@@ -77,7 +82,8 @@ namespace DataAccess.Configuration.InitialData
                     Email = "elizabeth@gmail.com",
                     EmailConfirmed = true,
                     Gender = "Female",
-                    RegistrationDate = new DateTime(2018, 10, 11)
+                    RegistrationDate = new DateTime(2018, 10, 11),
+                    Blocked = false
                 },
                 new User
                 {
@@ -88,7 +94,8 @@ namespace DataAccess.Configuration.InitialData
                     Email = "axl@gmail.com",
                     EmailConfirmed = true,
                     Gender = "Male",
-                    RegistrationDate = new DateTime(2017, 6, 11)
+                    RegistrationDate = new DateTime(2017, 6, 11),
+                    Blocked = false
                 },
                 new User
                 {
@@ -99,7 +106,8 @@ namespace DataAccess.Configuration.InitialData
                     Email = "madison@gmail.com",
                     EmailConfirmed = true,
                     Gender = "Female",
-                    RegistrationDate = new DateTime(2017, 9, 21)
+                    RegistrationDate = new DateTime(2017, 9, 21),
+                    Blocked = false
                 },
                 new User
                 {
@@ -110,7 +118,8 @@ namespace DataAccess.Configuration.InitialData
                     Email = "enakin@gmail.com",
                     EmailConfirmed = true,
                     Gender = "Male",
-                    RegistrationDate = new DateTime(2018, 9, 18)
+                    RegistrationDate = new DateTime(2018, 9, 18),
+                    Blocked = false 
                 }
             };
             builder.HasData(users);

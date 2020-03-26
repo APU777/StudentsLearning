@@ -32,6 +32,8 @@ namespace BusinessLogic.Services
             var result = await _userManager.FindByEmailAsync(loginDTO.Login.ToLower());
             if (result != null)
             {
+                if (result.Blocked)
+                    return "Blocked";
                 var userRoles = await _userManager.GetRolesAsync(result);
                 var claims = new List<Claim>
                     {
@@ -49,6 +51,7 @@ namespace BusinessLogic.Services
         {
             var userToCreate = _mapper.Map<User>(registerDTO);
             userToCreate.UserName = registerDTO.Login;
+            userToCreate.Blocked = false;
             var res = await _userManager.CreateAsync(userToCreate, registerDTO.Password);
             if (res.Succeeded)
                 currentUser = userToCreate;

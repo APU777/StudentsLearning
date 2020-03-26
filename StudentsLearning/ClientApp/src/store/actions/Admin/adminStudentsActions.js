@@ -1,5 +1,5 @@
 import axios from '../../../axios';
-import { START_STUDENTS_FETCHING, FETCH_STUDENTS_FAIL, FETCH_STUDENTS_SUCCESS } from './adminTypes';
+import { START_STUDENTS_FETCHING, FETCH_STUDENTS_FAIL, FETCH_STUDENTS_SUCCESS, BLOCK_STUDENT_FAIL, BLOCK_STUDENT_SUCCESS } from './adminTypes';
 
 const convertDate = date => {
     const dateString = new Date(Date.parse(date)).toLocaleDateString();
@@ -28,7 +28,7 @@ export const fetchStudents = (sortBy='', isSortAscending = false, search='', cur
                     age: res.data[index].age,
                     gender: res.data[index].gender,
                     registrationDate: convertDate(res.data[index].registrationDate),
-                    isActive: true
+                    blocked: res.data[index].blocked
                 })
             });
             dispatch(fetchSuccess(students, pageInfo));
@@ -67,3 +67,37 @@ export const fetchSuccess = (students, pageInfo) => {
         totalPages: totalPages
     }
 } 
+
+export const blockStudent = (id) => {
+    const token = localStorage.getItem('token');
+    console.log(id);
+    const studentId = {
+        id: id
+    }
+    return async dispatch => {
+        try {
+            const res = await axios.post('students/blockStudent/', studentId, { 'headers': { 'Authorization': 'Bearer ' + token } });
+            dispatch(blockSuccess(res.data));
+            //toast.success(res.data, { containerId: 'subscription' });
+        } catch (e) {
+            dispatch(blockFail(e.response.data));
+            //toast.error(e.response.data, { containerId: 'subscription' });
+        }
+    }
+}
+
+export const blockFail = e => {
+    return {
+        type: BLOCK_STUDENT_FAIL,
+        loading: false,
+        error: e
+    }
+}
+
+export const blockSuccess = successMsg => {
+    return {
+        type: BLOCK_STUDENT_SUCCESS,
+        loading: false,
+        success: successMsg
+    }
+}

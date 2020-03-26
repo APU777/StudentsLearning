@@ -33,7 +33,8 @@ namespace StudentsLearning
                             Age = 38,
                             EmailConfirmed = true,
                             Gender = "Male",
-                            RegistrationDate = new DateTime(2017, 9, 18)
+                            RegistrationDate = new DateTime(2017, 9, 18),
+                            Blocked = false
                         };
                         userManager.CreateAsync(user, "12345Admin")
                         .Wait();

@@ -45,5 +45,13 @@ namespace StudentsLearning.Controllers
                 return BadRequest("User was not found");
             return Ok(_mapper.Map<UserWithCoursesViewModel>(student));
         }
+
+        [Authorize(Roles = "admin")]
+        [HttpPost("blockStudent")]
+        public async Task<IActionResult> BlockStudent([FromBody]StudentBlockViewModel id)
+        {
+            await _studentService.BlockStudent(id.Id);
+            return Ok("Blocked");
+        }
     }
 }

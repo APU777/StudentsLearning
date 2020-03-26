@@ -40,7 +40,6 @@ class Courses extends Component {
     }
 
     render() {
-        console.log(Array.from(this.props.coursesList).length);
         return (
             <React.Fragment>
                 <Container>

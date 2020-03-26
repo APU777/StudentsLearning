@@ -1,7 +1,7 @@
 ﻿import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Tab } from 'semantic-ui-react';
-import { fetchStudents } from '../../store/actions/Admin/adminStudentsActions';
+import { fetchStudents, blockStudent } from '../../store/actions/Admin/adminStudentsActions';
 import TableContent from '../../components/Admin/TableContent/TableContent';
 import { fetchCourses } from '../../store/actions/Admin/adminCoursesActions';
 
@@ -56,10 +56,15 @@ class Admin extends Component {
         sortBy = '';
         this.props.fetchCourses();
     }
+
+    blockStudentHandler = (val) => {
+        this.props.blockStudent(val);
+    }
         
     render() {
         let students = (
             <TableContent
+                blockStudent={this.blockStudentHandler}
                 clickHandler={this.sortStudentsBy}
                 currentPage={this.props.studentsCurrentPage}
                 totalPages={this.props.studentsTotalPages}
@@ -73,6 +78,7 @@ class Admin extends Component {
 
         let courses = (
             <TableContent
+                blockStudent={this.blockStudentHandler}
                 clickHandler={this.sortCoursesBy}
                 currentPage={this.props.coursesCurrentPage}
                 totalPages={this.props.coursesTotalPages}
@@ -123,7 +129,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         fetchStudents: (orderBy, isSortAscendingStudents, search, currentPage) => dispatch(fetchStudents(orderBy, isSortAscendingStudents, search, currentPage)),
-        fetchCourses: (orderBy, isSortAscendingCourses, search, currentPage) => dispatch(fetchCourses(orderBy, isSortAscendingCourses, search, currentPage))
+        fetchCourses: (orderBy, isSortAscendingCourses, search, currentPage) => dispatch(fetchCourses(orderBy, isSortAscendingCourses, search, currentPage)),
+        blockStudent: (id) => dispatch(blockStudent(id))
     }
 }
 

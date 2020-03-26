@@ -9,5 +9,6 @@ namespace BusinessLogic.Interfaces
     {
         Task<PageInfo<UserDTO>> GetStudents(QueryParamsDTO filters);
         Task<UserWithCoursesDTO> GetStudent(int id);
+        Task<string> BlockStudent(int id);
     }
 }

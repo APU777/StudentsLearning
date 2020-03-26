@@ -4,6 +4,7 @@ import Pagination from '../../Pagination/Pagination';
 import { NavLink, withRouter } from 'react-router-dom';
 import Loader from '../../UI/Loader/Loader';
 import styled from 'styled-components';
+import CheckBox from '../../UI/CheckBox/CheckBox';
 
 const StyledInput = styled(Input)`
     margin-right: 5px;
@@ -13,7 +14,8 @@ export default class TableContent extends Component {
     state = {
         search: '',
         column: null,
-        direction: null
+        direction: null,
+        checked: true
     };
 
     getKeys = () => {
@@ -48,17 +50,26 @@ export default class TableContent extends Component {
         this.props.clickHandler(clickedColumn);
     };
 
+    handleCheck = (checked, id) => {
+        this.props.blockStudent(id);
+    }
+
     renderRow = (keys, data) => {
         return keys.map((key) => {
-            return <Table.Cell key={this.generateKey(key)}><React.Fragment>{data[key]}</React.Fragment></Table.Cell>
+            if(key === 'blocked'){
+                return <Table.Cell key={this.generateKey(key)}>
+                    <React.Fragment>{
+                        <CheckBox name={data['id']} block={this.handleCheck} checked={data[key]}></CheckBox>
+                    }</React.Fragment></Table.Cell>
+            } else {
+                return <Table.Cell key={this.generateKey(key)}><React.Fragment>{data[key]}</React.Fragment></Table.Cell>
+            }
         })
     }
 
     renderStudentsTab = () => {
         let keys = this.getKeys();
-        //console.log(keys);
         return this.props.value.map((row) => {
-            //console.log(row);
             return <Table.Row key={this.generateKey(row)}>{this.renderRow(keys, row)}</Table.Row>
         })
     };
@@ -73,7 +84,6 @@ export default class TableContent extends Component {
     }
 
     render() {
-        console.log(this.props);
         let tabContent = (
             <Table sortable celled>
                 <Table.Header>
@@ -114,7 +124,7 @@ export default class TableContent extends Component {
                     placeholder='Search...' />
                 <Button onClick={this.props.resetSearch}>Reset</Button>
                 <NavLink to={'/addCourse'}>
-                    <Button onClick={console.log("add course")}>Add Course</Button>
+                    <Button>Add Course</Button>
                 </NavLink>                
                 {tabContent}
             </React.Fragment>

@@ -32,6 +32,14 @@ namespace BusinessLogic.Services
             return _mapper.Map<UserWithCoursesDTO>(student);
         }
 
+        public async Task<string> BlockStudent(int id)
+        {
+            var student = await _userRepo.GetByIdAsync(id);
+            student.Blocked = !student.Blocked;
+            _userRepo.Edit(student);
+            return null;
+        }
+
         public async Task<PageInfo<UserDTO>> GetStudents(QueryParamsDTO queryParams)
         {
             var students = _userRepo.GetAllQueryable();
@@ -49,7 +57,8 @@ namespace BusinessLogic.Services
                 ["age"] = s => s.Age,
                 ["email"] = s => s.Email,
                 ["registrationDate"] = s => s.RegistrationDate,
-                ["gender"] = s => s.Gender
+                ["gender"] = s => s.Gender,
+                ["blocked"] = s => s.Blocked
             };
             students = students.ApplyOrdering(queryParams, columnsMap);
             var pagedStudents = await PagedList<User>.CreateAsync(students, queryParams.CurrentPage, queryParams.PageSize);
