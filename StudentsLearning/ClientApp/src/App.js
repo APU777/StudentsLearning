@@ -46,7 +46,8 @@ class App extends Component {
     if (this.props.isLoggedIn && this.props.userRole === 'admin') {
       routes = (
         <Switch>
-          <Route path='/course/:id' component={CourseDetail} />
+          <Route path='/course/:id' component={UpdateCourseDetail} />
+          <Route path='/addCourse' component={AddCourse} />
           <Route path='/logout' component={Logout} />
           <Route path='/admin' component={Admin} />
           <Route path='/' exact component={Courses} />
