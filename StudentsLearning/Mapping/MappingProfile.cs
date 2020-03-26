@@ -19,7 +19,10 @@ namespace StudentsLearning.Mapping
             CreateMap<CoursesQueryViewModel, CoursesPagingDTO>();
             CreateMap<CoursesQueryViewModel, QueryParamsDTO>();
             CreateMap<CourseDTO, CourseViewModel>();
+            CreateMap<UpdateCourseViewModel, UpdateCourseDTO>();
+            CreateMap<CourseAddViewModel, CourseAddDTO>();
             CreateMap<CourseForAdminDTO, CourseForAdminViewModel>();
+            CreateMap<CourseForUserDTO, CourseForUserViewModel>();
             CreateMap<StudentQueryViewModel, QueryParamsDTO>();
             CreateMap<UserDTO, UserViewModel>();
             CreateMap<UserDTO, UserForAdminViewModel>();

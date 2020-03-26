@@ -66,7 +66,11 @@ const courseCard = props => {
                 </StyledCardContent>
                 <div style={{ padding: '1.5em' }}>
                     <NavLink to={'/course/' + props.courseId}>
-                        <StyledButton secondary>Watch</StyledButton>
+                        {
+                            props.isAuth && props.userRole === 'admin' ?
+                            <StyledButton secondary>Edit</StyledButton> :
+                            <StyledButton secondary>Watch</StyledButton>
+                        }
                     </NavLink>
                 </div>
             </StyledCard>
