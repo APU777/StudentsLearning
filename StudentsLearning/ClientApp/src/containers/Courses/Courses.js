@@ -45,11 +45,9 @@ class Courses extends Component {
                 <Container>
                     {this.props.isAuth && this.props.userRole === 'student' ?
                         <Container>
-                            <StyledInput
-                                value={this.state.search}
+                            <StyledInput value={this.state.search}
                                 action={{ icon: 'search', onClick: () => this.inputHandler() }}
-                                onChange={this.handleInputChange}
-                                placeholder='Search...'
+                                onChange={this.handleInputChange} placeholder='Search...'
                             />
                             <Button style={{margin:'0 3%'}} onClick={this.resetSearch}>Reset</Button>
                         </Container> : null
@@ -82,10 +80,8 @@ class Courses extends Component {
                         <Container>
                             <Grid>
                                 <Grid.Row centered>
-                                    <Pagination
-                                        currentPage={this.props.currentPage}
-                                        loadData={this.props.fetchCourses}
-                                        totalPages={this.props.totalPages} />
+                                    <Pagination currentPage={this.props.currentPage}
+                                        loadData={this.props.fetchCourses} totalPages={this.props.totalPages} />
                                 </Grid.Row>
                             </Grid>
                         </Container> : null
